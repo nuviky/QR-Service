@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Visitor {
+  uuid       String   @id @default(uuid()) @db.Uuid()
+  profileId  String   @unique @map("profile_id") @db.VarChar(255)
+  creds      String   @default(uuid()) @db.Uuid() @unique
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  finishedAt DateTime @map("finished_at")
+
+  @@map("visitor")
+}
+
+model Reader {
+  uuid      String   @id @default(uuid()) @db.Uuid()
+  profileId String   @unique @map("profile_id") @db.VarChar(255)
+  creds     String   @default(uuid()) @db.Uuid() @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("reader")
+}
+
+model ReaderChildren {
+  uuid              String   @id @default(uuid())
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+  finishedAt        DateTime? @map("finished_at")
+
+  @@map("reader_children")
+}
